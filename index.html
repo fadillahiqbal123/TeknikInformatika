@@ -1,9 +1,116 @@
-<html>
+<!doctype html>
+<html lang="en">
     <head>
-        <title></title>
+        <title>Title</title>
+       
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+
+       
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+        />
+        <link rel="stylesheet" href="style.css">
     </head>
+
     <body>
-        <h1>SAYA BELAJAR JAVASCRIPT</h1>
-        <script src="script.js"></script>
+        <header>
+         <h1>Tugas Workshop Sistem Informasi Berbasis Web</h1>
+        </header>
+        <main>
+            <h1>Form Pengembalian</h1>
+            <form id="loanForm">
+            <div class="mb-3 mt-4">
+                <label for="memberId" class="form-label">No. Anggota</label>
+                <input type="text" class="form-control" id="memberId" placeholder="Masukan No. Anggota">
+              </div>
+              <div class="mb-3">
+                <label for="loanDate" class="form-label">Tgl.Peminjaman</label>
+                <input type="date" class="form-control" id="loanDate">
+              </div>
+              <div class="mb-3">
+                <label for="returnDate" class="form-label">Tgl.Pengembalian</label>
+                <input type="date" class="form-control" id="returnDate">
+              </div>
+              <div class="mb-3"></div>
+                <label for="formGroupExampleInput2" class="form-label">Denda</label>
+                <input type="text" class="form-control" id="fine"  readonly>
+              </div>
+
+              <div class="mb-3"></div>
+                <label for="payment" class="form-label">Dibayarkan</label>
+                <input type="number" class="form-control" id="payment" placeholder="Masukkan jumlah pembayaran">
+              </div>
+              <div class="mb-3"></div>
+                <label for="change" class="form-label">Kembalian</label>
+                <input type="text" class="form-control" id="change" readonly>
+              </div>
+              <div class="mb-3 mt-10 d-flex justify-content-end">
+             <button type="button" class="btn btn-warning" onclick="calculateFine()">Proses</button>
+            </div>
+            </form>
+        </main>
+        <footer></footer>
+
+        <script>
+          function calculateFine() {
+              const loanDate = new Date(document.getElementById('loanDate').value);
+              const returnDate = new Date(document.getElementById('returnDate').value);
+              const payment = parseFloat(document.getElementById('payment').value);
+      
+              const finePerDay = 1500; // Denda Rp 1.500 per hari
+              let fine = 0;
+      
+              // Hitung jumlah hari antara Tgl Peminjaman dan Tgl Pengembalian
+              const timeDiff = returnDate - loanDate;
+      
+              // Konversi selisih waktu ke dalam hari
+              const daysLate = Math.floor(timeDiff / (1000 * 3600 * 24)); 
+      
+              // Pastikan returnDate >= loanDate dan cek keterlambatan lebih dari 3 hari
+              if (daysLate > 3) {
+                  fine = (daysLate - 3) * finePerDay; // Hitung denda setelah hari ke-3
+              }
+      
+              // Set nilai denda di input field
+              document.getElementById('fine').value = fine;
+      
+              // Hitung kembalian dan cek apakah pembayaran cukup
+              if (payment >= fine) {
+                  const change = payment - fine;
+                  document.getElementById('change').value = change;
+      
+                  // Hanya cetak 'Lunas' jika tidak ada keterlambatan atau pembayaran mencukupi
+                  if (fine === 0) {
+                      alert('Lunas tanpa denda');
+                  } else {
+                      alert('Lunas dengan denda');
+                  }
+              } else {
+                  // Jika pembayaran tidak mencukupi, beri peringatan
+                  alert('Pembayaran kurang');
+              }
+          }
+      </script>
+      
+      
+        
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"
+        ></script>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"
+        ></script>
     </body>
 </html>
